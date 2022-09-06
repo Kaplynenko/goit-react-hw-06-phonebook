@@ -1,12 +1,14 @@
 import {useState} from 'react';
-import PropTypes from 'prop-types';
-import { nanoid } from 'nanoid';
 
-const Form=({addContact,arrayContact}) =>{
+import { nanoid } from 'nanoid';
+import { useDispatch,useSelector} from 'react-redux';
+import { addContact } from 'Redux/contactSlice';
+
+const Form=() =>{
   const [number,setNumber]=useState('')
   const [name,setName]=useState('')
- 
-  
+ const dispatch = useDispatch()
+  const arrayContact = useSelector(state => state.contacts.items)
     const handleChange = event => {
       
       
@@ -36,7 +38,7 @@ const Form=({addContact,arrayContact}) =>{
 
     
      filterName? alert(`${eventNameValue} is already in Contacts`)
-      : addContact({ uId, name,number });
+      : dispatch(addContact({ uId, name,number }));
     reset();
   };
 
@@ -80,8 +82,5 @@ const Form=({addContact,arrayContact}) =>{
     );
   }
 
-Form.propType = {
-  addContact: PropTypes.func.isRequired,
-  arrayContact: PropTypes.array.isRequired,
-};
+
 export default Form;

@@ -1,18 +1,35 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Contact from '../Contacts/index';
 import { useStyles } from './styles';
-const ContactList = ({ contactArrey, onDeleteEl }) => {
-  const styles = useStyles()
+import { useSelector } from 'react-redux';
+const ContactList = () => {
+  const contacts = useSelector(state => state.contacts.items)
+  const filter =useSelector(state=>state.contacts.filter)
+    const styles = useStyles()
+
+    const getVisibleEl = () => {
+    
+        const normalizedFilter = filter.toLowerCase();
+    
+        return contacts.filter(e =>
+          e.name.toLowerCase().includes(normalizedFilter)
+        );
+      };
+      const visibleEl = getVisibleEl();
+
+
   return (
     <ul className={styles.list}>
-      {contactArrey.map(({ uId, name, number }) => {
-        return (
+      {visibleEl.map(({ uId, name, number }) => {
+       
+       return (
+          
           <Contact
             key={uId}
             name={name}
             number={number}
-            deleteEl={() => onDeleteEl(uId)}
+            id={uId}
+            
           />
         );
       })}
@@ -20,13 +37,5 @@ const ContactList = ({ contactArrey, onDeleteEl }) => {
   );
 };
 
-ContactList.propTypes = {
-  contactArrey: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    }).isRequired
-  ),
-  onDeleteEl: PropTypes.func.isRequired,
-};
+
 export default ContactList;

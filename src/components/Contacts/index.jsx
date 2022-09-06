@@ -1,17 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-const Contact =({name,number,deleteEl})=>{
+import {useDispatch} from 'react-redux'
+import { removeContact } from '../../Redux/contactSlice';
+const Contact =({name,number,id})=>{
+    const dispatch = useDispatch()
+    
     return (
         <li>
             {name}:{number}
-            <button type="button" onClick={deleteEl}>Delete</button>
+            <button type="button" onClick={()=>dispatch(removeContact(id))}>Delete</button>
         </li>
     )
 };
 Contact.protoType = {
     name: PropTypes.string.isRequired,
     number: PropTypes.number.isRequired,
-    deleteEl: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired
   };
   
   export default Contact;
